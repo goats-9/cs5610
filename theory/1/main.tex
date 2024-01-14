@@ -1,0 +1,165 @@
+\documentclass[journal,12pt,onecolumn]{IEEEtran}
+\usepackage{./macros}
+
+\begin{document}
+\vspace{3cm}
+\title{CS5610 Assignment 1}
+\author{Gautam Singh\\CS21BTECH11018}
+\maketitle
+\bigskip
+
+\begin{enumerate}
+    \item The given equation is
+    \begin{equation}
+        6x + 10y = 2.
+        \label{eq:gcd-q1}
+    \end{equation}
+    Computing the GCD of 6 and 10 using Euclid's extended algorithm, we
+    get
+    \begin{equation}
+        \myvec{6\\10} \xrightarrow{q=1} \myvec{4\\6} \xrightarrow{q=1} \myvec{2\\4} \xrightarrow{q=2} \myvec{0\\2}.
+        \label{eq:euclid-q1}
+    \end{equation}
+    where \(q\) is the quotient on dividing the larger number by the smaller
+    number. Since \(2\ |\ 2\), \eqref{eq:gcd-q1} equation has a solution over
+    integers. The transition matrix is given by 
+    \begin{equation}
+        M = \myvec{-2 & 1 \\ 1 & 0}\myvec{-1 & 1 \\ 1 & 0}^2 
+        = \myvec{-2 & 1 \\ 1 & 0}\myvec{2 & -1 \\ -1 & 1} 
+        = \myvec{-5 & 3 \\ 2 & -1}.
+        \label{eq:mtx-q1}
+    \end{equation}
+    Thus, the required integer solution is \(\brak{x, y} = \brak{2, -1}\).
+
+    \item Using Bezout's Lemma, we know that the equation \(6x + 10y = c\) has
+    an integer solution if \(\gcd\brak{6, 10}\ |\ c\). Hence, we may write 
+    \begin{equation}
+        6x + 10y = 2t
+        \label{eq:bezout-q2}
+    \end{equation}
+    for some integer \(t\). The new equation is
+    \begin{equation}
+        2t + 15z = 1.
+        \label{eq:gcd-q2}
+    \end{equation}
+    Using Euclid's extended algorithm, we get
+    \begin{equation}
+        \myvec{2\\15} \xrightarrow{q=7} \myvec{1\\2} \xrightarrow{q=2} \myvec{0\\1}.
+        \label{eq:euclid-q2}
+    \end{equation}
+    Since \(1\ |\ 1\), \eqref{eq:gcd-q2} has a solution over integers. The
+    transition matrix is given by
+    \begin{equation}
+        M = \myvec{-2 & 1 \\ 1 & 0}\myvec{-7 & 1 \\ 1 & 0} 
+        = \myvec{15 & -2 \\ -7 & 1}.
+        \label{eq:mtx-q2}
+    \end{equation}
+    Hence, \(\brak{t, z} = \brak{-7, 1}\). Suppose that \(\brak{x_0, y_0}\) is
+    an integer solution to \eqref{eq:gcd-q1}. Then, an integer solution to
+    \eqref{eq:bezout-q2} is \(\brak{tx_0, ty_0}\). From the previous question,
+    \(\brak{x_0, y_0} = \brak{2, -1}\). Hence, an integer solution to
+    \eqref{eq:gcd-q2} is \(\brak{x, y, z} = \brak{-14, 7, 1}\).
+
+    \item Denote \(\brak{a, b} \triangleq \gcd\brak{a, b}\). If \(m = n\), then
+    we have
+    \begin{equation}
+        \brak{a^m-1, a^n-1} = a^m - 1
+        = a^{\gcd\brak{m,n}} - 1
+        \label{eq:gcd-equal-q3}
+    \end{equation}
+    and the claim holds. Suppose without loss of generality that \(m > n\).
+    Then, the proof proceeds by induction on \(m + n\). The base case is when
+    \(m = 2\) and \(n = 1\), whence
+    \begin{align}
+        \brak{a^2 - 1, a - 1} &= \brak{\brak{a-1}\brak{a+1}, a-1} \\
+        &= a-1 = a^{\brak{2,1}} - 1.
+        \label{eq:gcd-base-q3}
+    \end{align}
+    For the induction step, we make use of the following lemma.
+    \begin{lemma}
+        \label{lem:coprime-prod}
+        If integers \(a, b\) satisfy \(\brak{a,b} = 1\), then for any integer
+        \(c\), \(\brak{ab,c} = \brak{a,c}\brak{b,c}\).
+    \end{lemma}
+    \begin{proof}
+        Using Bezout's Lemma, there exist integers \(x\) and \(y\) such that
+        \begin{equation}
+            ax + by = 1.
+            \label{eq:lem-bezout-1}
+        \end{equation}
+        Multiplying \eqref{eq:lem-bezout-1} by \(c\), we see that \(acx + bcy =
+        c\), which can be recast as
+        \begin{equation}
+            \brak{a,c}\brak{b,c}\sbrak{\frac{a}{\brak{a,c}}\frac{c}{\brak{b,c}}x + \frac{b}{\brak{b,c}}\frac{c}{\brak{a,c}}y} = c
+            \label{eq:recast-lem-bezout-1}
+        \end{equation}
+        where \(\frac{a}{\brak{a,c}}\) etc. are integers. Thus,
+        \(\brak{a,c}\brak{b,c}\ |\ c\). Since \(\brak{a,c}\ |\ a\) and
+        \(\brak{b,c}\ |\ b\), we obtain \(\brak{a,c}\brak{b,c}\ |\ ab\). Hence,
+        \(\brak{a,c}\brak{b,c}\ |\ \brak{ab,c}\). To prove the other direction,
+        applying Bezout's lemma twice gives us integers \(p, q, r, s\) such that
+        \begin{align}
+            ap + cq &= \brak{a,c} \\
+            br + cs &= \brak{b,c}.
+            \label{eq:lem-bezout-2}
+        \end{align}
+        Thus,
+        \begin{align}
+            \brak{a,c}\brak{b,c} &= \brak{ap + cq}\brak{br + cs} \\
+            &= abpr + c\brak{aps + bqr + cqs}.
+        \end{align}
+        Hence, \(\brak{ab,c}\ |\ \brak{a,c}\brak{b,c}\). Putting both directions
+        together, we have \(\brak{ab,c} = \brak{a,c}\brak{b,c}\).
+    \end{proof}
+    In the original question, suppose that the claim holds for all \(k < m +
+    n\). Then, using Euclid's algorithm,
+    \begin{align}
+        \brak{a^m-1, a^n-1} &= \brak{a^m-a^n, a^n-1} \\
+        &= \brak{a^n\brak{a^{m-n}-1}, a^n-1} \\
+        &= \brak{a^n, a^n-1}\brak{a^{m-n}-1, a^n-1} \label{eq:gcd-ab-q3} \\
+        &= \brak{a^{m-n}-1, a^n-1} \\
+        &= a^{\brak{m-n,n}} - 1 = a^{\brak{m,n}} - 1.
+        \label{eq:proof-q3}
+    \end{align}
+    where \eqref{eq:gcd-ab-q3} follows from \autoref{lem:coprime-prod} since
+    \begin{align}
+        a^n\brak{a^{m-n}} + \brak{-1}\brak{a^{m} - 1} = 1 \implies \brak{a^n, a^m - 1} = 1
+        \label{eq:bezout-ab-q3}
+    \end{align}
+    and \eqref{eq:proof-q3} follows from the induction hypothesis since \(m-n +
+    n = m < m + n\).
+
+    \item The given equation is
+    \begin{equation}
+        2x + 3y + 5z = 0.
+        \label{eq:gcd-q4}
+    \end{equation}
+    We recast this as
+    \begin{equation}
+        2x + 3y = -5z.
+        \label{eq:gcd-q4-recast}
+    \end{equation}
+    Now, using Euclid's algorithm, we obtain
+    \begin{equation}
+        \myvec{2\\3} \xrightarrow{q=1} \myvec{1\\2} \xrightarrow{q=2} \myvec{0\\1}.
+        \label{eq:euclid-q4}
+    \end{equation}
+    and since \(1\ |\ -5z\) for all integers \(z\), there exists a solution to
+    \eqref{eq:gcd-q4}. We find the solution for 
+    \begin{equation}
+        2x + 3y = 1
+        \label{eq:part-q4}
+    \end{equation}
+    as follows.
+    \begin{equation}
+        M = \myvec{-2 & 1 \\ 1 & 0}\myvec{-1 & 1 \\ 1 & 0} = \myvec{3 & -2 \\ -1 & 1}.
+        \label{eq:mtx-q4}
+    \end{equation}
+    whence a particular solution for \eqref{eq:part-q4} is \(\brak{x, y} =
+    \brak{-1, 1}\) . Multiplying \eqref{eq:part-q4} by \(-5z\), a particular
+    solution of \eqref{eq:gcd-q4-recast} is \(\brak{x,y,z} = \brak{5z, -5z,
+    z}\). The entire family of solutions is then given by \(\brak{x,y,z} =
+    \brak{5z-3t,2t-5z,z}\) for all integers \(t,z\).
+\end{enumerate}
+
+\end{document}
