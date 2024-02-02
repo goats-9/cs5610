@@ -2,7 +2,7 @@
 Date        : 2024-01-14
 Author      : Gautam Singh
 Roll Number : CS21BTECH11018
-File        : CS5610_CS21BTECH11018_HW1.py
+File        : CS5610_CS21BTECH11018_ProgHW1.py
 Purpose     : Implement Euclid's algorithm to find gcd of two numbers a and b 
               and find integers x, y such that ax + by = gcd(a,b).
 '''
