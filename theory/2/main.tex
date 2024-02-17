@@ -1,0 +1,134 @@
+\documentclass[journal,12pt,onecolumn]{IEEEtran}
+\usepackage{./macros}
+
+\begin{document}
+\vspace{3cm}
+\title{CS5610 Assignment 2}
+\author{Gautam Singh\\CS21BTECH11018}
+\maketitle
+\bigskip
+
+\begin{enumerate}
+    \item The given equation is
+    \begin{equation}
+        x^2 - 1 = 0,\ x \in \bZ_n.
+        \label{eq:1-zn}
+    \end{equation}
+    Factoring \(n\) into its prime divisors 17 and 19, and considering
+    \eqref{eq:1-zn} modulo these primes yields the equation
+    \begin{equation}
+        x^2 - 1 = 0,\ x \in \bZ_p,\ p \in \cbrak{17,19}.
+        \label{eq:1-zp}
+    \end{equation}
+    By Lagrange's Theorem in \(\bZ_p\), \eqref{eq:1-zp} may be rewritten as
+    \begin{equation}
+        \brak{x+1}\brak{x-1} = 0,
+        \label{eq:1-zp-fac}
+    \end{equation}
+    giving \(x \in \cbrak{1, p-1}\) for both values of \(p\). Consider the
+    bijection
+    \begin{equation}
+        f : \bZ_n \to \bZ_{17} \times \bZ_{19},\ f\brak{x} = \brak{x \bmod 17, x \bmod 19}.
+        \label{eq:f-def}
+    \end{equation}
+    Thus, any solution to \eqref{eq:1-zn} will also satisfy
+    \begin{align}
+        x &\equiv \pm 1 \bmod 17 \\
+        x &\equiv \pm 1 \bmod 19.
+    \end{align}
+    Using the Chinese Remainder Theorem gives us four solutions (one for each
+    combination of signs) \(x \in \cbrak{1,18,305,322}\).
+
+    \item The equation is \(x^7 = 2\) in \(\bZ_{11}\). Clearly, \(x = 0\) is not
+    a solution, thus \(x \in \bZ_{11}^*\). Fermat's Little Theorem gives
+    \(x^{10} = 1\). Since \(\gcd\brak{7,10} = 1\), we use Euclid's Algorithm to
+    find integers \(a, b\) such that
+    \begin{equation}
+        7a + 10b = 1.
+        \label{eq:2-gcd}
+    \end{equation}
+    One such solution is \(\brak{a, b} = \brak{3, -2}\). Thus, we have
+    \begin{equation}
+        x = x^{7\brak{3} + 10\brak{-2}} = \brak{x^7}^3 = 2^3 = 8.
+        \label{eq:2-sol}
+    \end{equation}
+    Hence, the unique solution is \(x = 8\).
+    
+    \item Clearly, \(a = 0\) is not a solution to \(a^d = 1\) in \(\bZ_p\). Let
+    \(g\) be a generator of the multiplicative group \(Z_p^*\). Letting \(a =
+    g^k\) for some \(k \in \bZ\), we can rewrite the equation as
+    \begin{equation}
+        g^{kd} = g^0 = 1.
+        \label{eq:3-new-eq}
+    \end{equation}
+    Hence, we must have \(kd = n\brak{p-1}\) for some \(n\in\bZ\). Since \(d\ |\
+    p-1\), we obtain \(k = \frac{n\brak{p-1}}{d}\). Thus, \(a =
+    \brak{g^n}^{\frac{p-1}{d}}\). Since \(g\) generates \(\bZ_p^*\) and
+    \(n\in\bZ\), the set of solutions to the given equation is
+    \(\cbrak{a^{\frac{p-1}{d}}\ :\ a \in \bZ_p^*}\), as required.
+
+    \item 
+    \begin{enumerate}
+        \item Define \(g \triangleq \gcd\brak{d,n}\). Then, by Bezout's Lemma,
+        there exist integers \(a\) and \(b\) such that
+        \begin{equation}
+            da + nb = g.
+            \label{eq:4a-gcd}
+        \end{equation}
+        Multiplying throughout by \(k\) and taking residues modulo \(n\), as
+        well as applying the condition that \(dk \equiv 0 \bmod n\), we get
+        \begin{equation}
+            adk + nbk = gk \implies gk \equiv 0 \bmod n \implies k = \frac{nm}{g},\ m \in \bZ.
+            \label{eq:4a-k-sol}
+        \end{equation}
+        However, we have \(0 \le k < n\). Thus, \(0 \le m < g\). Hence,
+        \begin{equation}
+            \left\vert\cbrak{0 \le k \le n - 1 : dk \equiv 0 \bmod n}\right\vert = \gcd\brak{d,n}.
+            \label{eq:4a-sol}
+        \end{equation}
+
+        \item We know that for an integer \(a\) and positive integers \(m,n\),
+        we have
+        \begin{equation}
+            \gcd\brak{a^m-1,a^n-1} = a^{\gcd\brak{m,n}}-1.
+            \label{eq:4b-gcd-exp}
+        \end{equation}
+        Consider the polynomials \(f\brak{x} = x^d - 1\) and \(g\brak{x} =
+        x^{p-1} - 1\) in \(\bZ_p\sbrak{x}\). Since Euclid's algorithm works in
+        \(\bZ_p\), \eqref{eq:4b-gcd-exp} holds in \(\bZ_p\sbrak{x}\). By
+        Fermat's Little Theorem, all elements of \(\bZ_p^*\) are roots of
+        \(g\brak{x}\). Hence, any root of \(f\brak{x}\) will also be a root of
+        \(\gcd\brak{f\brak{x},g\brak{x}} = x^{\gcd\brak{d,p-1}} - 1\), as \(x =
+        0\) is clearly not a root of \(f\brak{x}\).
+        
+        We also know that \(x^k - 1\) has \(k\) roots if \(k\ |\ p - 1\). Taking
+        \(k = \gcd\brak{d,p-1}\), there are \(\gcd\brak{d,p-1}\) roots of
+        \(f\brak{x}\) in \(\bZ_p\).
+    \end{enumerate}
+
+    \item Consider in \(\bZ_7\) the equation
+    \begin{equation}
+        x^2 - 4 = \brak{x-2}\brak{x+2} = 0.
+        \label{eq:5-z7}
+    \end{equation}
+    Using Lagrange's Theorem in \(\bZ_7\), we see that the roots of
+    \eqref{eq:5-z7} are \(x = \pm 2\) or \(x = 2,5\).
+    
+    Now consider \eqref{eq:5-z7} in \(\bZ_{7^2}\). Any solution must be of the
+    form \(x = 7k \pm 2\). Substituting and working in \(\bZ_{7^2}\), we get
+    \begin{equation}
+        \brak{7k\pm 2}^2 - 4 = 0 \implies \pm 28k = 0 \implies k = 0.
+        \label{eq:5-k-z49}
+    \end{equation}
+    Thus, the solutions in \(\bZ_{7^2}\) are \(x = \pm 2\) or \(x = 2, 47\).
+    Again, any solution to \eqref{eq:5-z7} in \(\bZ_{7^3}\) must be of the form
+    \(x = 7^2k \pm 2\). Substituting and working in \(\bZ_{7^3}\),
+    \begin{equation}
+        \brak{7^2k \pm 2}^2 - 4 = 0 \implies \pm 196k = 0 \implies k = 0.
+        \label{eq:5-k-z343}
+    \end{equation}
+    Therefore, the solutions of \eqref{eq:5-z7} in \(\bZ_{343}\) are \(x = 2,
+    341\).
+\end{enumerate}
+
+\end{document}
