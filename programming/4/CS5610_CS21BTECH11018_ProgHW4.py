@@ -50,17 +50,18 @@ class Polynomial:
         return len(self.coeff) - 1
 
     def field_equal(self, other):
-        """ Check if both polynomials belong to the same field. """
+        """ Check if both polynomials belong to the same field Zp[x]. """
         assert self.p == other.p
 
     def __add__(self, other):
+        """ Add two polynomials. """
         if isinstance(other, int):
             other = Polynomial(self.p, (other,))
         self.field_equal(other)
         # Get coefficients of polynomial objects, with smallest degree first
         a = self.coeff[::-1]
         b = other.coeff[::-1]
-        # c = a + b
+        # c = a + b, with zeros padded for later coefficients
         c = [sum(t)%self.p for t in itertools.zip_longest(a, b, fillvalue=0)]
         c = c[::-1]
         cnt = len(c)
@@ -80,15 +81,19 @@ class Polynomial:
         return self + other
 
     def __mul__(self, other):
+        """ Multiply two polynomials. """
         if isinstance(other, int):
             other = Polynomial(self.p, (other,))
         self.field_equal(other)
         res = Polynomial(self.p)
+        # Perform naive multiplication in Zp[x]
         for _, bi in enumerate(other.coeff):
             res_add = self
             res_add.coeff = [c*bi%p for c in res_add.coeff]
             res += res_add
+            # Shift the results for the next addition
             res.coeff.append(0)
+        # The last shift is not required, if it exists
         if len(res.coeff):
             res.coeff.pop()
         return res
@@ -100,6 +105,7 @@ class Polynomial:
         return self*other
 
     def __sub__(self, other):
+        """ Subtract `other` from `self`. """
         if isinstance(other, int):
             other = Polynomial(self.p, (other,))
         self.field_equal(other)
@@ -113,7 +119,8 @@ class Polynomial:
     def __isub__(self, other):
         return self - other
 
-    def __truediv__(self, other):
+    def __floordiv__(self, other):
+        """ Return the quotient of `self` / `other`. """
         self.field_equal(other)
         quot = Polynomial(self.p, tuple())
         while self.degree() >= other.degree():
@@ -128,20 +135,11 @@ class Polynomial:
             quot.coeff.append(c)
         return quot
 
-    def __rtruediv__(self, other):
-        return other / self
-
-    def __itruediv__(self, other):
-        return self / other
-
-    def __floordiv__(self, other):
-        return self / other
-
     def __rfloordiv__(self, other):
-        return other / self
+        return other // self
 
     def __ifloordiv__(self, other):
-        return self / other
+        return self // other
 
     def __mod__(self, other):
         if isinstance(other, int):
@@ -156,24 +154,28 @@ class Polynomial:
         return other % self
 
     def __rmod__(self, other):
-        return self / other
+        return self % other
 
     def __divmod__(self, other):
-        return self / other, self % other
+        """ Return both quotient and remainder on dividing `self` by `other`. """
+        return self // other, self % other
 
     def __rdivmod__(self, other):
-        return other / self, other % self
+        return other // self, other % self
 
     def __idivmod__(self, other):
-        return self / other, self % other
+        return self // other, self % other
 
     def __eq__(self, other):
+        """ Check if two polynomials are equal. """
         return self.p == other.p and self.coeff == other.coeff
 
     def __neq__(self, other):
+        """ Check if two polynomials are not equal. """
         return not self.p == other.p
 
-    def __str__(self):
+    def __str__(self, var: str = 'x') -> str:
+        """ Print the polynomial, given a variable representation. """
         val = ''
         deg = self.degree()
         for i, ai in enumerate(self.coeff):
@@ -184,11 +186,11 @@ class Polynomial:
             elif deg == i + 1:
                 if ai > 1:
                     val += f'{ai}*'
-                val += 'x'
+                val += var
             else:
                 if ai > 1:
                     val += f'{ai}*'
-                val += f'x^{deg-i}'
+                val += f'{var}^{deg-i}'
             val += ' + '
         return val[:-2]
 
