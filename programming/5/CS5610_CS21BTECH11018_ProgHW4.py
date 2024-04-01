@@ -52,6 +52,28 @@ class Polynomial:
     def field_equal(self, other):
         """ Check if both polynomials belong to the same field Zp[x]. """
         assert self.p == other.p
+    
+    def derivative(self):
+        """ Compute the derivative of the polynomial. """
+        deg = self.degree()
+        # Coefficients of the derived polynomial go here
+        der_coeff = []
+        for i, coeff in enumerate(self.coeff):
+            # Constant term check
+            if deg - i - 1 < 0:
+                continue
+            next_coeff = (deg - i - 1)*coeff%self.p
+            # Leading zeros should not be appended
+            if next_coeff != 0 or len(der_coeff) != 0:
+                der_coeff.append(next_coeff)
+        # Create a polynomial object and return
+        return Polynomial(self.p, tuple(der_coeff))
+
+    def square_free(self):
+        """ Method to find the square-free part of the given polynomial. """
+
+    def factorize(self):
+        """ Factorize the polynomial using the Cantor-Zassenhaus algorithm. """
 
     def __add__(self, other):
         """ Add two polynomials. """
@@ -235,7 +257,7 @@ def euclid_ext_zp (
         return g, M[1][0], M[1][1]
 
 # Constants
-INPUT_FILE='input-polygcd1.csv'
+INPUT_FILE='input-polygcd2.csv'
 
 # Parse input from file
 p = 0
