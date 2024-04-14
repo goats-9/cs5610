@@ -113,9 +113,6 @@ class Polynomial:
         res = self + other1
         return res
 
-    def __rsub__(self, other):
-        return other + -1*self
-
     def __isub__(self, other):
         return self - other
 
@@ -135,9 +132,6 @@ class Polynomial:
             quot.coeff.append(c)
         return quot
 
-    def __rfloordiv__(self, other):
-        return other // self
-
     def __ifloordiv__(self, other):
         return self // other
 
@@ -153,15 +147,9 @@ class Polynomial:
     def __imod__(self, other):
         return other % self
 
-    def __rmod__(self, other):
-        return self % other
-
     def __divmod__(self, other):
         """ Return both quotient and remainder on dividing `self` by `other`. """
         return self // other, self % other
-
-    def __rdivmod__(self, other):
-        return other // self, other % self
 
     def __idivmod__(self, other):
         return self // other, self % other
@@ -176,23 +164,24 @@ class Polynomial:
 
     def __str__(self, var: str = 'x') -> str:
         """ Print the polynomial, given a variable representation. """
-        val = ''
         deg = self.degree()
+        repr_list = []
         for i, ai in enumerate(self.coeff):
             if ai == 0:
                 continue
-            if deg == i:
+            val = ''
+            if deg - i == 0:
                 val += f'{ai}'
-            elif deg == i + 1:
-                if ai > 1:
-                    val += f'{ai}*'
-                val += var
             else:
                 if ai > 1:
                     val += f'{ai}*'
-                val += f'{var}^{deg-i}'
-            val += ' + '
-        return val[:-2]
+                val += f'{var}'
+                if deg - i > 1:
+                    val += f'^{deg-i}'
+            repr_list.append(val)
+        if len(repr_list) == 0:
+            return "0"
+        return ' + '.join(repr_list)
 
 
 def matrix_mul(A: list, B: list) -> list:
